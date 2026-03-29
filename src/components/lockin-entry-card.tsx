@@ -7,8 +7,8 @@ export function LockInEntryCard({ entry }: { entry: LockInEntry }) {
   const status = getLockStatus(entry.unlockAt);
 
   return (
-    <article className="rounded-3xl border border-white/10 bg-slate-950/70 p-5 shadow-[0_20px_80px_rgba(0,0,0,0.24)]">
-      <div className="flex items-start justify-between gap-4">
+    <article className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 shadow-[0_20px_80px_rgba(0,0,0,0.24)] sm:p-5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.28em] text-slate-500">{status === "ready" ? "Unlockable" : "Locked"}</p>
           <h3 className="mt-2 text-xl font-semibold text-white">{entry.serviceName}</h3>
@@ -36,7 +36,7 @@ export function LockInEntryCard({ entry }: { entry: LockInEntry }) {
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-between gap-4">
+      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="max-w-sm text-sm text-slate-500">
           {status === "ready"
             ? "The waiting period is over. Reveal still requires the passphrase."
@@ -44,7 +44,7 @@ export function LockInEntryCard({ entry }: { entry: LockInEntry }) {
         </p>
         <Link
           href={`/lockins/${entry.id}`}
-          className="rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200"
+          className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
         >
           View LockIn
         </Link>

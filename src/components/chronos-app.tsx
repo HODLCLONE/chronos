@@ -185,42 +185,42 @@ export function ChronosApp() {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),_transparent_25%),linear-gradient(180deg,#02040a_0%,#060913_50%,#05070d_100%)] text-slate-100">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
-        <section className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.34)] backdrop-blur sm:p-8">
+    <main className="min-h-dvh bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),_transparent_25%),linear-gradient(180deg,#02040a_0%,#060913_50%,#05070d_100%)] text-slate-100">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 pb-[calc(1.5rem+var(--safe-bottom))] pt-[calc(1.25rem+var(--safe-top))] sm:gap-6 sm:px-6 sm:py-8 lg:px-8">
+        <section className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_30px_120px_rgba(0,0,0,0.34)] backdrop-blur sm:rounded-[2rem] sm:p-8">
           <div className="grid gap-8 lg:grid-cols-[1.4fr_0.9fr]">
             <div>
               <p className="text-xs uppercase tracking-[0.35em] text-cyan-200/75">Chronos · {MODE_NAME}</p>
-              <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+              <h1 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-5xl">
                 Lock yourself out. Lock in.
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
                 Chronos is a local-first commitment tool. It encrypts secrets before storing them on this device, then forces time and intention to stand between you and an impulsive reversal.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
                   type="button"
-                  className="rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
+                  className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold tracking-[0.18em] text-slate-950 transition hover:bg-cyan-200 sm:min-h-0 sm:w-auto"
                   onClick={() => setCreateOpen(true)}
                 >
-                  Create LockIn
+                  LOCK IN
                 </button>
                 <a
                   href="#backup"
-                  className="rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200"
+                  className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto"
                 >
                   Backup and restore
                 </a>
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+            <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
               {[
                 { label: "Locked entries", value: entries.length.toString() },
                 { label: "Ready to reveal", value: readyCount.toString() },
                 { label: "Storage model", value: "Local only" },
               ].map((metric) => (
-                <div key={metric.label} className="rounded-3xl border border-white/10 bg-slate-950/70 p-5">
+                <div key={metric.label} className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 sm:p-5">
                   <p className="text-xs uppercase tracking-[0.28em] text-slate-500">{metric.label}</p>
                   <p className="mt-4 text-3xl font-semibold text-white">{metric.value}</p>
                 </div>
@@ -232,8 +232,8 @@ export function ChronosApp() {
         <PwaInstallPrompt />
 
         {toast ? (
-          <section className={`rounded-3xl border px-5 py-4 text-sm ${toastToneClass(toast.tone)}`}>
-            <div className="flex items-center justify-between gap-4">
+          <section className={`rounded-3xl border px-4 py-4 text-sm sm:px-5 ${toastToneClass(toast.tone)}`}>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <p>{toast.message}</p>
               <button type="button" className="text-xs uppercase tracking-[0.24em]" onClick={() => setToast(null)}>
                 Dismiss
@@ -243,7 +243,7 @@ export function ChronosApp() {
         ) : null}
 
         <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6">
+          <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
             <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Trust model</p>
             <h2 className="mt-3 text-2xl font-semibold text-white">Honest constraints, not fake certainty.</h2>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
@@ -258,7 +258,7 @@ export function ChronosApp() {
             </ul>
           </div>
 
-          <section id="backup" className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6">
+          <section id="backup" className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
             <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Encrypted backup</p>
             <h2 className="mt-3 text-2xl font-semibold text-white">Export and import stay client-side.</h2>
             <p className="mt-4 text-sm leading-7 text-slate-300">
@@ -276,10 +276,10 @@ export function ChronosApp() {
               />
             </label>
 
-            <div className="mt-4 flex flex-wrap gap-3">
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <button
                 type="button"
-                className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-100"
+                className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-100 sm:min-h-0 sm:w-auto sm:py-2"
                 onClick={() => {
                   handleExport().catch((error) =>
                     setToast({
@@ -291,7 +291,7 @@ export function ChronosApp() {
               >
                 Export encrypted backup
               </button>
-              <label className="rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200">
+              <label className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2">
                 <input ref={importInputRef} type="file" accept="application/json" className="hidden" />
                 Choose backup file
               </label>
@@ -312,7 +312,7 @@ export function ChronosApp() {
 
             <button
               type="button"
-              className="mt-4 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200"
+              className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
               onClick={() => {
                 const file = importInputRef.current?.files?.[0] ?? null;
                 handleImport(file).catch((error) =>
@@ -328,7 +328,7 @@ export function ChronosApp() {
           </section>
         </section>
 
-        <section className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6">
+        <section className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Vault</p>

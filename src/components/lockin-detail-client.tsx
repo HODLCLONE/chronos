@@ -102,15 +102,15 @@ export function LockInDetailClient({ id }: { id: string }) {
   const status = getLockStatus(entry.unlockAt);
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,#02040a_0%,#070b14_55%,#05070d_100%)] px-4 py-8 text-slate-200 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-5xl flex-col gap-6">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <Link href="/" className="rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200">
+    <main className="min-h-dvh bg-[linear-gradient(180deg,#02040a_0%,#070b14_55%,#05070d_100%)] px-4 pb-[calc(1.5rem+var(--safe-bottom))] pt-[calc(1.25rem+var(--safe-top))] text-slate-200 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mx-auto flex max-w-5xl flex-col gap-5 sm:gap-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <Link href="/" className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2">
             Back to vault
           </Link>
           <button
             type="button"
-            className="rounded-full border border-rose-300/20 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:border-rose-300/40"
+            className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-rose-300/20 px-4 py-3 text-sm font-semibold text-rose-100 transition hover:border-rose-300/40 sm:min-h-0 sm:w-auto sm:py-2"
             onClick={() => {
               handleDelete().catch(() => setError("Chronos could not delete the local record."));
             }}
@@ -119,11 +119,11 @@ export function LockInDetailClient({ id }: { id: string }) {
           </button>
         </div>
 
-        <section className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-8 shadow-[0_30px_120px_rgba(0,0,0,0.34)]">
+        <section className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 shadow-[0_30px_120px_rgba(0,0,0,0.34)] sm:rounded-[2rem] sm:p-8">
           <p className="text-xs uppercase tracking-[0.35em] text-cyan-200/75">Chronos · Lock detail</p>
-          <div className="mt-4 flex flex-wrap items-start justify-between gap-6">
+          <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-6">
             <div>
-              <h1 className="text-4xl font-semibold text-white">{entry.serviceName}</h1>
+              <h1 className="text-3xl font-semibold text-white sm:text-4xl">{entry.serviceName}</h1>
               <p className="mt-3 text-sm text-slate-400">Identity hint: {entry.usernameOrEmail}</p>
             </div>
             <span
@@ -137,7 +137,7 @@ export function LockInDetailClient({ id }: { id: string }) {
             </span>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <div className="mt-6 grid gap-3 md:mt-8 md:grid-cols-3 md:gap-4">
             <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5">
               <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Unlock date</p>
               <p className="mt-3 text-lg font-medium text-white">{formatUnlockDate(entry.unlockAt)}</p>
@@ -154,7 +154,7 @@ export function LockInDetailClient({ id }: { id: string }) {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6">
+          <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
             <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Reveal gate</p>
             <h2 className="mt-3 text-2xl font-semibold text-white">
               {status === "ready" ? "You waited. Now prove it with the passphrase." : "Not yet."}
@@ -178,7 +178,7 @@ export function LockInDetailClient({ id }: { id: string }) {
 
             <button
               type="button"
-              className="mt-4 rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-slate-300"
+              className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition disabled:cursor-not-allowed disabled:bg-slate-600 disabled:text-slate-300 sm:min-h-0"
               disabled={status !== "ready"}
               onClick={() => {
                 handleReveal().catch((revealError) =>
@@ -197,7 +197,7 @@ export function LockInDetailClient({ id }: { id: string }) {
             ) : null}
           </div>
 
-          <div className="rounded-[2rem] border border-white/10 bg-slate-950/70 p-6">
+          <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
             <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Secret material</p>
             <h2 className="mt-3 text-2xl font-semibold text-white">Masked by default. Explicit reveal only.</h2>
 
@@ -208,7 +208,7 @@ export function LockInDetailClient({ id }: { id: string }) {
                   <p className="mt-3 break-all text-lg font-medium text-white">{revealed.usernameOrEmail}</p>
                   <button
                     type="button"
-                    className="mt-4 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200"
+                    className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
                     onClick={() => {
                       copyValue(revealed.usernameOrEmail, "Username or email").catch(() =>
                         setError("Chronos could not copy the username or email."),
@@ -224,7 +224,7 @@ export function LockInDetailClient({ id }: { id: string }) {
                   <p className="mt-3 break-all text-lg font-medium text-white">{revealed.password}</p>
                   <button
                     type="button"
-                    className="mt-4 rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200"
+                    className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
                     onClick={() => {
                       copyValue(revealed.password, "Password").catch(() =>
                         setError("Chronos could not copy the password."),

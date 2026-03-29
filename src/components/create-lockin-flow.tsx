@@ -113,9 +113,14 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
     "mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300";
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/80 px-4 py-6 backdrop-blur sm:items-center">
-      <div className="w-full max-w-3xl rounded-[2rem] border border-white/10 bg-[#070b14] p-6 shadow-[0_30px_140px_rgba(0,0,0,0.45)] sm:p-8">
-        <div className="flex items-start justify-between gap-4">
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center overflow-y-auto bg-slate-950/80 px-3 pt-4 pb-[max(0.75rem,var(--safe-bottom))] backdrop-blur sm:px-4 sm:py-6"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Create LockIn"
+    >
+      <div className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] sm:rounded-[2rem] border border-white/10 bg-[#070b14] shadow-[0_30px_140px_rgba(0,0,0,0.45)] sm:max-h-[min(100dvh-3rem,56rem)]">
+        <div className="flex items-start justify-between gap-4 border-b border-white/8 px-4 py-4 sm:px-8 sm:py-6">
           <div>
             <p className="text-xs uppercase tracking-[0.32em] text-cyan-200/70">Create {MODE_NAME}</p>
             <h2 className="mt-2 text-2xl font-semibold text-white">Lock yourself out. Lock in.</h2>
@@ -132,7 +137,8 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
           </button>
         </div>
 
-        <div className="mt-6 flex gap-3 text-xs uppercase tracking-[0.22em] text-slate-500">
+        <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-8 sm:py-6">
+          <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.22em] text-slate-500">
           {[1, 2, 3].map((index) => (
             <span
               key={index}
@@ -292,54 +298,58 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
           </div>
         ) : null}
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
-          {step > 1 ? (
-            <button
-              type="button"
-              className="rounded-full border border-white/10 px-5 py-3 text-sm font-medium text-slate-300 transition hover:border-white/25 hover:text-white"
-              onClick={() => {
-                setError(null);
-                setStep((current) => current - 1);
-              }}
-            >
-              Back
-            </button>
-          ) : null}
+        </div>
 
-          {step < 3 ? (
-            <button
-              type="button"
-              className="rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
-              onClick={() => {
-                try {
+        <div className="border-t border-white/8 px-4 py-4 sm:px-8 sm:py-6">
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+            {step > 1 ? (
+              <button
+                type="button"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/10 px-5 py-3 text-sm font-medium text-slate-300 transition hover:border-white/25 hover:text-white sm:min-h-0 sm:w-auto"
+                onClick={() => {
                   setError(null);
-                  if (step === 1) {
-                    validateStepOne();
-                  }
+                  setStep((current) => current - 1);
+                }}
+              >
+                Back
+              </button>
+            ) : null}
 
-                  if (step === 2) {
-                    setTypedPhrase("");
-                    setCooldown(FINAL_CONFIRM_DELAY_SECONDS);
-                  }
+            {step < 3 ? (
+              <button
+                type="button"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 sm:min-h-0 sm:w-auto"
+                onClick={() => {
+                  try {
+                    setError(null);
+                    if (step === 1) {
+                      validateStepOne();
+                    }
 
-                  setStep((current) => current + 1);
-                } catch (stepError) {
-                  setError(stepError instanceof Error ? stepError.message : "Chronos cannot continue yet.");
-                }
-              }}
-            >
-              Continue
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition disabled:cursor-not-allowed disabled:bg-slate-500 disabled:text-slate-200"
-              disabled={!canConfirm}
-              onClick={handleFinalSubmit}
-            >
-              {pending ? "Encrypting LockIn..." : "Create LockIn"}
-            </button>
-          )}
+                    if (step === 2) {
+                      setTypedPhrase("");
+                      setCooldown(FINAL_CONFIRM_DELAY_SECONDS);
+                    }
+
+                    setStep((current) => current + 1);
+                  } catch (stepError) {
+                    setError(stepError instanceof Error ? stepError.message : "Chronos cannot continue yet.");
+                  }
+                }}
+              >
+                Continue
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold tracking-[0.18em] text-slate-950 transition disabled:cursor-not-allowed disabled:bg-slate-500 disabled:text-slate-200 sm:min-h-0 sm:w-auto"
+                disabled={!canConfirm}
+                onClick={handleFinalSubmit}
+              >
+                {pending ? "Encrypting LockIn..." : "LOCK IN"}
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
