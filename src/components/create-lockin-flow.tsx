@@ -12,6 +12,7 @@ import {
   PASSPHRASE_HINT,
   PASSPHRASE_MIN_LENGTH,
 } from "@/lib/constants";
+import { copyText } from "@/lib/clipboard";
 import { generateLockInPassword } from "@/lib/passwords";
 
 type CreateLockInSubmission = {
@@ -85,7 +86,7 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
   }
 
   async function handleCopyPassword() {
-    await navigator.clipboard.writeText(form.password);
+    await copyText(form.password);
     setError(null);
     setCopiedPassword(true);
     setPasswordMessage("Generated password copied. Paste it into the target platform before you continue.");

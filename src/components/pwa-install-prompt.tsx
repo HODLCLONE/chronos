@@ -1,18 +1,62 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
 };
 
-export function PwaInstallPrompt() {
+type PromptState = {
+  installed: boolean;
+  online: boolean;
+  canInstall: boolean;
+  isIos: boolean;
+  isSafari: boolean;
+  dismissed: boolean;
+};
+
+type Props = {
+  testState?: PromptState;
+};
+
+function detectStandalone() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const navigatorWithStandalone = navigator as Navigator & { standalone?: boolean };
+  const matchesDisplayMode = typeof window.matchMedia === "function" && window.matchMedia("(display-mode: standalone)").matches;
+  return matchesDisplayMode || navigatorWithStandalone.standalone === true;
+}
+
+function detectIos() {
+  if (typeof navigator === "undefined") {
+    return false;
+  }
+
+  return /iphone|ipad|ipod/i.test(navigator.userAgent);
+}
+
+function detectSafari() {
+  if (typeof navigator === "undefined") {
+    return false;
+  }
+
+  const userAgent = navigator.userAgent;
+  return /safari/i.test(userAgent) && !/crios|fxios|edgios|chrome|android/i.test(userAgent);
+}
+
+export function PwaInstallPrompt({ testState }: Props) {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [dismissed, setDismissed] = useState(false);
+  const [installed, setInstalled] = useState(() => testState?.installed ?? detectStandalone());
+  const [online, setOnline] = useState(() => testState?.online ?? (typeof navigator === "undefined" ? true : navigator.onLine));
+  const [isIos] = useState(() => testState?.isIos ?? detectIos());
+  const [isSafari] = useState(() => testState?.isSafari ?? detectSafari());
 
   useEffect(() => {
-    if (!("serviceWorker" in navigator)) {
+    if (testState || !("serviceWorker" in navigator)) {
       return;
     }
 
@@ -25,42 +69,112 @@ export function PwaInstallPrompt() {
       setDeferredPrompt(event as BeforeInstallPromptEvent);
     };
 
-    window.addEventListener("beforeinstallprompt", handlePrompt);
-    return () => window.removeEventListener("beforeinstallprompt", handlePrompt);
-  }, []);
+    const handleInstalled = () => {
+      setInstalled(true);
+      setDeferredPrompt(null);
+      setDismissed(false);
+    };
 
-  if (!deferredPrompt || dismissed) {
+    const handleOnline = () => setOnline(true);
+    const handleOffline = () => setOnline(false);
+
+    window.addEventListener("beforeinstallprompt", handlePrompt);
+    window.addEventListener("appinstalled", handleInstalled);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handlePrompt);
+      window.removeEventListener("appinstalled", handleInstalled);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, [testState]);
+
+  const state = useMemo<PromptState>(
+    () => ({
+      installed,
+      online,
+      canInstall: testState?.canInstall ?? Boolean(deferredPrompt),
+      isIos,
+      isSafari,
+      dismissed: testState?.dismissed ?? dismissed,
+    }),
+    [deferredPrompt, dismissed, installed, isIos, isSafari, online, testState],
+  );
+
+  const showPrompt = !state.dismissed && (state.installed || !state.online || state.canInstall || (state.isIos && state.isSafari));
+
+  if (!showPrompt) {
     return null;
   }
 
   return (
     <section className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_20px_80px_rgba(0,0,0,0.2)] backdrop-blur sm:rounded-3xl sm:p-5">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="text-sm uppercase tracking-[0.28em] text-cyan-200/70">PWA install</p>
-          <h2 className="mt-1 text-lg font-semibold text-white">Install Chronos for an offline-first LockIn shell.</h2>
-          <p className="mt-2 max-w-2xl text-sm text-slate-300">
-            Installing keeps Chronos one tap away and helps the app stay available when your network does not.
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="max-w-2xl">
+          <p className="text-sm uppercase tracking-[0.28em] text-cyan-200/70">PWA shell</p>
+          <h2 className="mt-1 text-lg font-semibold text-white">
+            {state.installed ? "Installed on this device" : "Install Chronos for an offline-first LockIn shell."}
+          </h2>
+          <p className="mt-2 text-sm text-slate-300">
+            {state.online
+              ? state.installed
+                ? "Offline-ready shell active. Launch from your home screen for the cleanest full-screen experience."
+                : "Installing keeps Chronos one tap away and improves the app-shell feel when you launch it from the home screen."
+              : "Offline-ready shell active. Local vault data stays on this device even while the network is down."}
           </p>
+
+          {!state.online ? (
+            <p className="mt-3 rounded-2xl border border-amber-300/20 bg-amber-400/10 px-4 py-3 text-sm text-amber-50">
+              Network is down right now. Cached UI remains available, but new browser assets wait for connection.
+            </p>
+          ) : null}
+
+          {!state.canInstall && !state.installed && state.isIos && state.isSafari ? (
+            <p className="mt-3 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">
+              On iPhone Safari, tap Share, then choose Add to Home Screen.
+            </p>
+          ) : null}
         </div>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <button
-            type="button"
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm text-slate-200 transition hover:border-white/30 hover:text-white sm:min-h-0 sm:w-auto sm:py-2"
-            onClick={() => setDismissed(true)}
-          >
-            Later
-          </button>
-          <button
-            type="button"
-            className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
-            onClick={async () => {
-              await deferredPrompt.prompt();
-              setDeferredPrompt(null);
-            }}
-          >
-            Install app
-          </button>
+
+        <div className="flex w-full flex-col gap-3 sm:w-auto sm:min-w-56">
+          {state.canInstall && !state.installed ? (
+            <button
+              type="button"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200"
+              onClick={async () => {
+                if (!deferredPrompt) {
+                  return;
+                }
+
+                await deferredPrompt.prompt();
+                const result = await deferredPrompt.userChoice.catch(() => ({ outcome: "dismissed" as const }));
+                setDeferredPrompt(null);
+                if (result.outcome === "accepted") {
+                  setInstalled(true);
+                }
+              }}
+            >
+              Install app
+            </button>
+          ) : null}
+
+          {state.installed ? (
+            <div className="rounded-2xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-50">
+              Installed on this device
+            </div>
+          ) : null}
+
+          {!state.installed ? (
+            <button
+              type="button"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm text-slate-200 transition hover:border-white/30 hover:text-white"
+              onClick={() => setDismissed(true)}
+            >
+              Later
+            </button>
+          ) : null}
         </div>
       </div>
     </section>

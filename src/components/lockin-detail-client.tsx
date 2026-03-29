@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { copyText } from "@/lib/clipboard";
 import { deleteLockIn, getAppMeta, getLockInById } from "@/lib/storage/lockins";
 import { decryptLockInPayload, verifyPassphrase } from "@/lib/security/crypto";
 import { formatCountdown, formatUnlockDate, getLockStatus } from "@/lib/time";
@@ -70,7 +71,7 @@ export function LockInDetailClient({ id }: { id: string }) {
   }
 
   async function copyValue(value: string, label: string) {
-    await navigator.clipboard.writeText(value);
+    await copyText(value);
     setMessage(`${label} copied. Chronos only copies on explicit request.`);
   }
 

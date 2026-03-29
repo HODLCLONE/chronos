@@ -1,5 +1,13 @@
-const CACHE_NAME = "chronos-v2";
-const CORE_ASSETS = ["/", "/manifest.webmanifest", "/chronos-icon.svg"];
+const CACHE_NAME = "chronos-v3";
+const CORE_ASSETS = [
+  "/",
+  "/offline",
+  "/manifest.webmanifest",
+  "/chronos-icon.svg",
+  "/icon-192.png",
+  "/icon-512.png",
+  "/apple-touch-icon.png",
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_ASSETS)));
@@ -23,7 +31,9 @@ self.addEventListener("fetch", (event) => {
   }
 
   if (request.mode === "navigate") {
-    event.respondWith(fetch(request).catch(() => caches.match("/")));
+    event.respondWith(
+      fetch(request).catch(async () => (await caches.match(request)) || (await caches.match("/offline")) || caches.match("/")),
+    );
     return;
   }
 
