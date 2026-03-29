@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { ChronosBootSequence } from "@/components/chronos-boot-sequence";
 import { CreateLockInFlow, type CreateLockInSubmission } from "@/components/create-lockin-flow";
+import { HourglassMark } from "@/components/hourglass-mark";
 import { LockInEntryCard } from "@/components/lockin-entry-card";
 import { PwaInstallPrompt } from "@/components/pwa-install-prompt";
 import { MODE_NAME, REQUIRED_WARNINGS } from "@/lib/constants";
@@ -35,6 +37,7 @@ export function ChronosApp() {
   const [entries, setEntries] = useState<LockInEntry[]>([]);
   const [meta, setMeta] = useState<AppMeta | null>(null);
   const [loading, setLoading] = useState(true);
+  const [bootVisible, setBootVisible] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
   const [createPending, setCreatePending] = useState(false);
   const [toast, setToast] = useState<{ tone: "success" | "error"; message: string } | null>(null);
@@ -67,6 +70,9 @@ export function ChronosApp() {
     if (searchParams.get("action") === "new-lockin") {
       setCreateOpen(true);
     }
+
+    const timer = window.setTimeout(() => setBootVisible(false), 1600);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const readyCount = useMemo(
@@ -190,29 +196,37 @@ export function ChronosApp() {
   }
 
   return (
-    <main className="min-h-dvh bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.12),_transparent_25%),linear-gradient(180deg,#02040a_0%,#060913_50%,#05070d_100%)] text-slate-100">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 pb-[calc(1.5rem+var(--safe-bottom))] pt-[calc(1.25rem+var(--safe-top))] sm:gap-6 sm:px-6 sm:py-8 lg:px-8">
-        <section className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_30px_120px_rgba(0,0,0,0.34)] backdrop-blur sm:rounded-[2rem] sm:p-8">
+    <>
+      <ChronosBootSequence visible={bootVisible} />
+      <main className="min-h-dvh text-slate-100">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 pb-[calc(1.5rem+var(--safe-bottom))] pt-[calc(1.25rem+var(--safe-top))] sm:gap-6 sm:px-6 sm:py-8 lg:px-8">
+        <section className="chronos-panel p-4 sm:p-8">
           <div className="grid gap-8 lg:grid-cols-[1.4fr_0.9fr]">
             <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-cyan-200/75">Chronos · {MODE_NAME}</p>
-              <h1 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight text-white sm:text-5xl">
-                Lock yourself out. Lock in.
+              <div className="flex items-center gap-4">
+                <HourglassMark className="h-14 w-14 sm:h-16 sm:w-16" />
+                <div>
+                  <p className="chronos-kicker">Chronos · Titan of time</p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.35em] text-[var(--chronos-muted)]">Hourglass Protocol · {MODE_NAME}</p>
+                </div>
+              </div>
+              <h1 className="chronos-title mt-5 max-w-3xl text-3xl font-semibold tracking-tight sm:text-5xl">
+                Seal the gate. Let Chronos keep the key until time has spoken.
               </h1>
-              <p className="mt-4 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-                Chronos is a local-first commitment tool. It encrypts secrets before storing them on this device, then forces time and intention to stand between you and an impulsive reversal.
+              <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--chronos-muted)] sm:text-lg">
+                Chronos is a local-first vow engine shaped like a temple vault. It forges a new password, seals it on this device, and puts an hourglass between impulse and reversal.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
                   type="button"
-                  className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold tracking-[0.18em] text-slate-950 transition hover:bg-cyan-200 sm:min-h-0 sm:w-auto"
+                  className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[var(--chronos-gold)] px-5 py-3 text-sm font-semibold tracking-[0.18em] text-[#2a130d] transition hover:bg-[var(--chronos-gold-strong)] sm:min-h-0 sm:w-auto"
                   onClick={() => setCreateOpen(true)}
                 >
                   LOCK IN
                 </button>
                 <a
                   href="#backup"
-                  className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto"
+                  className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-[var(--chronos-border)] px-5 py-3 text-sm font-semibold text-[var(--chronos-ink)] transition hover:border-[var(--chronos-border-strong)] hover:text-[var(--chronos-gold-strong)] sm:min-h-0 sm:w-auto"
                 >
                   Backup and restore
                 </a>
@@ -221,13 +235,13 @@ export function ChronosApp() {
 
             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
               {[
-                { label: "Locked entries", value: entries.length.toString() },
-                { label: "Ready to reveal", value: readyCount.toString() },
-                { label: "Storage model", value: "Local only" },
+                { label: "Sealed vaults", value: entries.length.toString() },
+                { label: "Hourglasses spent", value: readyCount.toString() },
+                { label: "Temple memory", value: "Local only" },
               ].map((metric) => (
-                <div key={metric.label} className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 sm:p-5">
-                  <p className="text-xs uppercase tracking-[0.28em] text-slate-500">{metric.label}</p>
-                  <p className="mt-4 text-3xl font-semibold text-white">{metric.value}</p>
+                <div key={metric.label} className="rounded-3xl border border-[var(--chronos-border)] bg-[var(--chronos-panel-strong)] p-4 sm:p-5">
+                  <p className="text-xs uppercase tracking-[0.28em] text-[var(--chronos-muted)]">{metric.label}</p>
+                  <p className="mt-4 text-3xl font-semibold text-[var(--chronos-ink)]">{metric.value}</p>
                 </div>
               ))}
             </div>
@@ -345,8 +359,12 @@ export function ChronosApp() {
           </div>
 
           {loading ? (
-            <div className="mt-6 rounded-3xl border border-white/8 bg-white/[0.03] px-5 py-10 text-sm text-slate-400">
-              Loading local vault state...
+            <div className="chronos-panel mt-6 flex flex-col items-center gap-4 px-5 py-10 text-center text-sm text-[var(--chronos-muted)]">
+              <HourglassMark animated className="h-14 w-14" />
+              <div>
+                <p className="chronos-kicker justify-center">Temple memory</p>
+                <p className="mt-3">The hourglass turns while Chronos reads the local vault.</p>
+              </div>
             </div>
           ) : entries.length === 0 ? (
             <div className="mt-6 rounded-3xl border border-dashed border-white/10 bg-white/[0.02] px-6 py-10 text-center text-sm text-slate-400">
@@ -370,6 +388,7 @@ export function ChronosApp() {
           onSubmit={handleCreate}
         />
       ) : null}
-    </main>
+      </main>
+    </>
   );
 }

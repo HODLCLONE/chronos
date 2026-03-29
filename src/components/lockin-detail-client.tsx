@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { HourglassMark } from "@/components/hourglass-mark";
 import { copyText } from "@/lib/clipboard";
 import { deleteLockIn, getAppMeta, getLockInById } from "@/lib/storage/lockins";
 import { decryptLockInPayload, verifyPassphrase } from "@/lib/security/crypto";
@@ -77,9 +78,13 @@ export function LockInDetailClient({ id }: { id: string }) {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-[#04070f] px-4 py-10 text-slate-200">
-        <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/10 bg-slate-950/70 p-8">
-          Loading local LockIn state...
+      <main className="min-h-screen px-4 py-10 text-slate-200">
+        <div className="chronos-panel mx-auto flex max-w-4xl flex-col items-center gap-4 p-8 text-center">
+          <HourglassMark animated className="h-16 w-16" />
+          <div>
+            <p className="chronos-kicker justify-center">Chronos remembers</p>
+            <p className="mt-3 text-[var(--chronos-muted)]">The vault is turning its hourglass and reading this seal from local memory.</p>
+          </div>
         </div>
       </main>
     );

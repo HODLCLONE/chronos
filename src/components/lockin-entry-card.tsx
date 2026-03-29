@@ -7,12 +7,12 @@ export function LockInEntryCard({ entry }: { entry: LockInEntry }) {
   const status = getLockStatus(entry.unlockAt);
 
   return (
-    <article className="rounded-3xl border border-white/10 bg-slate-950/70 p-4 shadow-[0_20px_80px_rgba(0,0,0,0.24)] sm:p-5">
+    <article className="chronos-panel p-4 sm:p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.28em] text-slate-500">{status === "ready" ? "Unlockable" : "Locked"}</p>
-          <h3 className="mt-2 text-xl font-semibold text-white">{entry.serviceName}</h3>
-          <p className="mt-2 text-sm text-slate-400">Identity hint: {entry.usernameOrEmail}</p>
+          <p className="text-xs uppercase tracking-[0.28em] text-[var(--chronos-muted)]">{status === "ready" ? "Seal may open" : "Seal active"}</p>
+          <h3 className="chronos-title mt-2 text-xl font-semibold">{entry.serviceName}</h3>
+          <p className="mt-2 text-sm text-[var(--chronos-muted)]">Mortal identity: {entry.usernameOrEmail}</p>
         </div>
         <span
           className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${

@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #04070f;
-  --foreground: #e7edf7;
+  --background: #12070f;
+  --foreground: #f6eedf;
+  --chronos-night: #12070f;
+  --chronos-night-2: #1d0b16;
+  --chronos-panel: rgba(29, 13, 23, 0.78);
+  --chronos-panel-strong: rgba(44, 18, 29, 0.9);
+  --chronos-border: rgba(207, 168, 91, 0.28);
+  --chronos-border-strong: rgba(240, 200, 116, 0.54);
+  --chronos-gold: #e3bf73;
+  --chronos-gold-strong: #f7d995;
+  --chronos-crimson: #8f3045;
+  --chronos-ink: #f6eedf;
+  --chronos-muted: #c9b894;
+  --chronos-shadow: 0 30px 120px rgba(0, 0, 0, 0.42);
 }
 
 @theme inline {
@@ -28,7 +40,10 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--background);
+  background:
+    radial-gradient(circle at top, rgba(237, 196, 110, 0.14), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(132, 43, 66, 0.22), transparent 28%),
+    linear-gradient(180deg, var(--chronos-night) 0%, var(--chronos-night-2) 48%, #09040a 100%);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-tap-highlight-color: transparent;
@@ -61,6 +76,139 @@ select {
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.32);
-  color: #f8fbff;
+  background: rgba(227, 191, 115, 0.36);
+  color: #1b0a12;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+body::before {
+  background:
+    linear-gradient(90deg, transparent 0, rgba(227, 191, 115, 0.04) 48%, transparent 100%),
+    repeating-linear-gradient(180deg, rgba(255, 244, 219, 0.015) 0 1px, transparent 1px 24px);
+  opacity: 0.8;
+}
+
+body::after {
+  background: radial-gradient(circle at 20% 18%, rgba(247, 217, 149, 0.09), transparent 18%);
+}
+
+.chronos-panel {
+  border: 1px solid var(--chronos-border);
+  background: linear-gradient(180deg, rgba(39, 17, 27, 0.94) 0%, rgba(20, 8, 15, 0.92) 100%);
+  box-shadow: var(--chronos-shadow);
+  border-radius: 1.75rem;
+}
+
+.chronos-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--chronos-gold);
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.chronos-kicker::before {
+  content: "◈";
+  color: var(--chronos-gold-strong);
+}
+
+.chronos-title {
+  color: var(--chronos-ink);
+  text-shadow: 0 0 24px rgba(227, 191, 115, 0.08);
+}
+
+.chronos-hourglass {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chronos-hourglass-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--chronos-gold-strong);
+  clip-path: polygon(18% 6%, 82% 6%, 60% 40%, 82% 94%, 18% 94%, 40% 40%);
+  background: linear-gradient(180deg, rgba(247, 217, 149, 0.09), rgba(143, 48, 69, 0.08));
+}
+
+.chronos-hourglass-neck {
+  position: absolute;
+  left: 50%;
+  top: 38%;
+  width: 10%;
+  height: 24%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(247, 217, 149, 0.95), rgba(227, 191, 115, 0.55));
+  box-shadow: 0 0 16px rgba(247, 217, 149, 0.18);
+}
+
+.chronos-hourglass-top-sand,
+.chronos-hourglass-bottom-sand {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #f7d995 0%, #c99252 100%);
+}
+
+.chronos-hourglass-top-sand {
+  top: 14%;
+  width: 34%;
+  height: 18%;
+  clip-path: polygon(10% 0%, 90% 0%, 58% 100%, 42% 100%);
+}
+
+.chronos-hourglass-bottom-sand {
+  bottom: 14%;
+  width: 40%;
+  height: 22%;
+  clip-path: polygon(42% 0%, 58% 0%, 90% 100%, 10% 100%);
+}
+
+.chronos-hourglass-animated {
+  animation: chronos-hourglass-flip 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.chronos-boot-line {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  border: 1px solid rgba(227, 191, 115, 0.14);
+  background: rgba(247, 217, 149, 0.04);
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  color: var(--chronos-muted);
+  animation: chronos-boot-pulse 1.2s ease-in-out infinite;
+}
+
+.chronos-boot-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--chronos-gold-strong);
+  box-shadow: 0 0 12px rgba(247, 217, 149, 0.55);
+}
+
+@keyframes chronos-hourglass-flip {
+  0%,
+  100% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+}
+
+@keyframes chronos-boot-pulse {
+  0%,
+  100% { opacity: 0.7; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-1px); }
 }

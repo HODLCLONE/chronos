@@ -8,10 +8,10 @@ import {
   FINAL_CONFIRM_DELAY_SECONDS,
   GENERATED_PASSWORD_COPY_MESSAGE,
   GENERATED_PASSWORD_REVEAL_LABEL,
-  MODE_NAME,
   PASSPHRASE_HINT,
   PASSPHRASE_MIN_LENGTH,
 } from "@/lib/constants";
+import { HourglassMark } from "@/components/hourglass-mark";
 import { copyText } from "@/lib/clipboard";
 import { generateLockInPassword } from "@/lib/passwords";
 
@@ -31,6 +31,7 @@ type Props = {
   pending: boolean;
   onClose: () => void;
   onSubmit: (payload: CreateLockInSubmission) => Promise<void>;
+  initialStep?: 1 | 2 | 3;
 };
 
 function createInitialState(): CreateLockInSubmission {
@@ -46,8 +47,8 @@ function createInitialState(): CreateLockInSubmission {
   };
 }
 
-export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSubmit }: Props) {
-  const [step, setStep] = useState(1);
+export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSubmit, initialStep = 1 }: Props) {
+  const [step, setStep] = useState(initialStep);
   const [error, setError] = useState<string | null>(null);
   const [typedPhrase, setTypedPhrase] = useState("");
   const [cooldown, setCooldown] = useState(FINAL_CONFIRM_DELAY_SECONDS);
@@ -136,7 +137,7 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
   }
 
   const inputClassName =
-    "mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-cyan-300";
+    "mt-2 w-full rounded-2xl border border-[var(--chronos-border)] bg-[rgba(9,4,10,0.84)] px-4 py-3 text-sm text-[var(--chronos-ink)] outline-none transition placeholder:text-[rgba(201,184,148,0.42)] focus:border-[var(--chronos-border-strong)]";
 
   return (
     <div
@@ -145,14 +146,17 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
       aria-modal="true"
       aria-label="Create LockIn"
     >
-      <div className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] sm:rounded-[2rem] border border-white/10 bg-[#070b14] shadow-[0_30px_140px_rgba(0,0,0,0.45)] sm:max-h-[min(100dvh-3rem,56rem)]">
-        <div className="flex items-start justify-between gap-4 border-b border-white/8 px-4 py-4 sm:px-8 sm:py-6">
-          <div>
-            <p className="text-xs uppercase tracking-[0.32em] text-cyan-200/70">Create {MODE_NAME}</p>
-            <h2 className="mt-2 text-2xl font-semibold text-white">Lock yourself out. Lock in.</h2>
-            <p className="mt-3 max-w-2xl text-sm text-slate-400">
-              Chronos is deliberately inconvenient. It is trying to help you keep a promise, not help you change your mind quickly.
-            </p>
+      <div className="chronos-panel flex max-h-[calc(100dvh-1.5rem)] w-full max-w-3xl flex-col overflow-hidden rounded-t-[2rem] sm:rounded-[2rem] sm:max-h-[min(100dvh-3rem,56rem)]">
+        <div className="flex items-start justify-between gap-4 border-b border-[var(--chronos-border)] px-4 py-4 sm:px-8 sm:py-6">
+          <div className="flex items-start gap-4">
+            <HourglassMark className="mt-1 h-12 w-12 sm:h-14 sm:w-14" />
+            <div>
+              <p className="chronos-kicker">Forge the seal</p>
+              <h2 className="chronos-title mt-2 text-2xl font-semibold">Enter the temple of Chronos.</h2>
+              <p className="mt-3 max-w-2xl text-sm text-[var(--chronos-muted)]">
+                This rite is deliberately inconvenient. Chronos is here to guard the vow, not comfort the part of you that wants to reverse it early.
+              </p>
+            </div>
           </div>
           <button
             type="button"
@@ -172,7 +176,7 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
                 step === index ? "bg-cyan-300 text-slate-950" : "bg-white/5 text-slate-400"
               }`}
             >
-              Step {index}
+              Rite {index}
             </span>
           ))}
         </div>
@@ -331,22 +335,26 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
         ) : null}
 
         {step === 3 ? (
-          <div className="mt-8 rounded-[1.75rem] border border-rose-400/20 bg-rose-400/10 p-6 text-sm text-rose-50">
-            <p className="text-xs uppercase tracking-[0.28em] text-rose-200/85">Warning 2 · commitment</p>
-            <h3 className="mt-3 text-xl font-semibold text-white">This is supposed to be hard to undo.</h3>
-            <p className="mt-4 max-w-2xl leading-7 text-rose-50/90">
-              You are deliberately creating friction for your future self. Chronos will make reveal annoying now so your goals have room to breathe later.
-            </p>
-            <label className="mt-6 block">
-              <span className="text-sm font-medium text-rose-100">Type the confirmation sentence exactly</span>
-              <input
-                className={inputClassName}
-                value={typedPhrase}
-                onChange={(event) => setTypedPhrase(event.target.value)}
-                placeholder={COMMITMENT_PHRASE}
-              />
-            </label>
-            <p className="mt-4 text-xs uppercase tracking-[0.24em] text-rose-200/80">Cooldown</p>
+            <div className="mt-8 rounded-[1.75rem] border border-[var(--chronos-border-strong)] bg-[rgba(143,48,69,0.18)] p-6 text-sm text-[var(--chronos-ink)]">
+              <p className="text-xs uppercase tracking-[0.28em] text-[var(--chronos-gold-strong)]">Final rite · oath to Chronos</p>
+              <h3 className="mt-3 text-xl font-semibold text-[var(--chronos-ink)]">This seal is meant to outlast your weak moment.</h3>
+              <p className="mt-4 max-w-2xl leading-7 text-[var(--chronos-muted)]">
+                Speak the line exactly. The god of time only opens the gate for a vow repeated in full, after the hourglass has turned.
+              </p>
+              <div className="mt-5 rounded-2xl border border-[var(--chronos-border)] bg-[rgba(247,217,149,0.06)] px-4 py-3">
+                <p className="text-xs uppercase tracking-[0.24em] text-[var(--chronos-gold)]">Seal spoken before the gate opens</p>
+                <p className="mt-2 break-words text-sm leading-7 text-[var(--chronos-ink)]">{COMMITMENT_PHRASE}</p>
+              </div>
+              <label className="mt-6 block">
+                <span className="text-sm font-medium text-[var(--chronos-ink)]">Type the seal exactly as shown above</span>
+                <input
+                  className={inputClassName}
+                  value={typedPhrase}
+                  onChange={(event) => setTypedPhrase(event.target.value)}
+                  placeholder="Repeat the line exactly"
+                />
+              </label>
+<p className="mt-4 text-xs uppercase tracking-[0.24em] text-rose-200/80">Cooldown</p>
             <p className="mt-1 text-sm text-rose-50/80">
               Final confirmation unlocks in {cooldown}s. Sit with it for a moment.
             </p>
@@ -363,7 +371,7 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
                 className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/10 px-5 py-3 text-sm font-medium text-slate-300 transition hover:border-white/25 hover:text-white sm:min-h-0 sm:w-auto"
                 onClick={() => {
                   setError(null);
-                  setStep((current) => current - 1);
+                  setStep((current) => (current === 3 ? 2 : 1));
                 }}
               >
                 Back
@@ -386,7 +394,7 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
                       setCooldown(FINAL_CONFIRM_DELAY_SECONDS);
                     }
 
-                    setStep((current) => current + 1);
+                    setStep((current) => (current === 1 ? 2 : 3));
                   } catch (stepError) {
                     setError(stepError instanceof Error ? stepError.message : "Chronos cannot continue yet.");
                   }
