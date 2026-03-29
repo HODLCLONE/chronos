@@ -28,4 +28,19 @@ describe("Chronos mobile-first UI", () => {
     expect(markup).toContain("max-h-[calc(100dvh-1.5rem)]");
     expect(markup).toContain("rounded-t-[2rem] sm:rounded-[2rem]");
   });
+
+  it("uses a generated copy-first password flow instead of exposing a password field", () => {
+    const markup = renderToStaticMarkup(
+      createElement(CreateLockInFlow, {
+        hasExistingPassphrase: false,
+        pending: false,
+        onClose: () => undefined,
+        onSubmit: async () => undefined,
+      }),
+    );
+
+    expect(markup).toContain("Copy generated password");
+    expect(markup).toContain("Generate another");
+    expect(markup).not.toContain("Password or secret");
+  });
 });

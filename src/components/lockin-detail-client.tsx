@@ -14,6 +14,7 @@ export function LockInDetailClient({ id }: { id: string }) {
   const [loading, setLoading] = useState(true);
   const [passphrase, setPassphrase] = useState("");
   const [revealed, setRevealed] = useState<DecryptedLockInPayload | null>(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,6 +49,7 @@ export function LockInDetailClient({ id }: { id: string }) {
 
     const decrypted = await decryptLockInPayload(entry, passphrase);
     setRevealed(decrypted);
+    setPasswordVisible(false);
     setMessage("Reveal completed. Nothing was copied automatically.");
   }
 
@@ -221,18 +223,32 @@ export function LockInDetailClient({ id }: { id: string }) {
 
                 <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5">
                   <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Password</p>
-                  <p className="mt-3 break-all text-lg font-medium text-white">{revealed.password}</p>
-                  <button
-                    type="button"
-                    className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
-                    onClick={() => {
-                      copyValue(revealed.password, "Password").catch(() =>
-                        setError("Chronos could not copy the password."),
-                      );
-                    }}
-                  >
-                    Copy password
-                  </button>
+                  <p className="mt-3 break-all text-lg font-medium tracking-[0.28em] text-white">
+                    {passwordVisible ? revealed.password : "•••••••••••••••"}
+                  </p>
+                  <p className="mt-3 text-sm leading-6 text-slate-400">
+                    Chronos keeps the password masked until you explicitly show it. Copy works either way.
+                  </p>
+                  <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                    <button
+                      type="button"
+                      className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
+                      onClick={() => {
+                        copyValue(revealed.password, "Password").catch(() =>
+                          setError("Chronos could not copy the password."),
+                        );
+                      }}
+                    >
+                      Copy password
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
+                      onClick={() => setPasswordVisible((current) => !current)}
+                    >
+                      {passwordVisible ? "Hide password" : "Show password"}
+                    </button>
+                  </div>
                 </div>
 
                 {revealed.note ? (

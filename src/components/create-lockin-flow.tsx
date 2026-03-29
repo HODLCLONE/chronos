@@ -6,10 +6,13 @@ import {
   COMMITMENT_PHRASE,
   DURATION_OPTIONS,
   FINAL_CONFIRM_DELAY_SECONDS,
+  GENERATED_PASSWORD_COPY_MESSAGE,
+  GENERATED_PASSWORD_REVEAL_LABEL,
   MODE_NAME,
   PASSPHRASE_HINT,
   PASSPHRASE_MIN_LENGTH,
 } from "@/lib/constants";
+import { generateLockInPassword } from "@/lib/passwords";
 
 type CreateLockInSubmission = {
   serviceName: string;
@@ -29,23 +32,27 @@ type Props = {
   onSubmit: (payload: CreateLockInSubmission) => Promise<void>;
 };
 
-const initialState: CreateLockInSubmission = {
-  serviceName: "",
-  usernameOrEmail: "",
-  password: "",
-  note: "",
-  durationValue: DURATION_OPTIONS[2]?.value ?? "90d",
-  customDate: "",
-  passphrase: "",
-  confirmPassphrase: "",
-};
+function createInitialState(): CreateLockInSubmission {
+  return {
+    serviceName: "",
+    usernameOrEmail: "",
+    password: generateLockInPassword(),
+    note: "",
+    durationValue: DURATION_OPTIONS[2]?.value ?? "90d",
+    customDate: "",
+    passphrase: "",
+    confirmPassphrase: "",
+  };
+}
 
 export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSubmit }: Props) {
   const [step, setStep] = useState(1);
   const [error, setError] = useState<string | null>(null);
   const [typedPhrase, setTypedPhrase] = useState("");
   const [cooldown, setCooldown] = useState(FINAL_CONFIRM_DELAY_SECONDS);
-  const [form, setForm] = useState<CreateLockInSubmission>(initialState);
+  const [copiedPassword, setCopiedPassword] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState<string | null>(null);
+  const [form, setForm] = useState<CreateLockInSubmission>(() => createInitialState());
 
   useEffect(() => {
     if (step !== 3 || cooldown === 0) {
@@ -77,6 +84,20 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
     }
   }
 
+  async function handleCopyPassword() {
+    await navigator.clipboard.writeText(form.password);
+    setError(null);
+    setCopiedPassword(true);
+    setPasswordMessage("Generated password copied. Paste it into the target platform before you continue.");
+  }
+
+  function handleGenerateAnotherPassword() {
+    setError(null);
+    setForm((current) => ({ ...current, password: generateLockInPassword() }));
+    setCopiedPassword(false);
+    setPasswordMessage(null);
+  }
+
   function validateStepOne() {
     if (!form.serviceName.trim()) {
       throw new Error("Name the service you are locking away.");
@@ -87,7 +108,11 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
     }
 
     if (!form.password.trim()) {
-      throw new Error("Enter the secret you want Chronos to encrypt.");
+      throw new Error("Chronos could not generate a password yet. Try generating a fresh one.");
+    }
+
+    if (!copiedPassword) {
+      throw new Error("Copy the generated password into the target platform before continuing.");
     }
 
     if (!form.passphrase.trim()) {
@@ -179,16 +204,45 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
               />
             </label>
 
-            <label className="block sm:col-span-2">
-              <span className="text-sm font-medium text-slate-200">Password or secret</span>
-              <input
-                type="password"
-                className={inputClassName}
-                placeholder="Stored encrypted. Never sent anywhere."
-                value={form.password}
-                onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
-              />
-            </label>
+            <div className="block sm:col-span-2">
+              <span className="text-sm font-medium text-slate-200">Generated lockout password</span>
+              <div className="mt-2 rounded-[1.75rem] border border-cyan-300/20 bg-cyan-300/8 p-4">
+                <p className="text-sm leading-7 text-slate-200">
+                  Chronos generates the replacement password for you. It stays hidden here until you copy it into the platform you are locking down.
+                </p>
+                <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-base tracking-[0.38em] text-slate-200" aria-label="Generated password hidden">
+                  •••••••••••••
+                </div>
+                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                  <button
+                    type="button"
+                    className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
+                    onClick={() => {
+                      handleCopyPassword().catch(() => {
+                        setError("Chronos could not copy the generated password.");
+                      });
+                    }}
+                  >
+                    {GENERATED_PASSWORD_COPY_MESSAGE}
+                  </button>
+                  <button
+                    type="button"
+                    className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
+                    onClick={handleGenerateAnotherPassword}
+                  >
+                    {GENERATED_PASSWORD_REVEAL_LABEL}
+                  </button>
+                </div>
+                <p className="mt-3 text-xs leading-6 text-slate-400">
+                  10–15 characters with letters, numbers, and symbols. Copy it, paste it into the target account, then continue.
+                </p>
+                {passwordMessage ? (
+                  <p className="mt-3 rounded-2xl border border-emerald-300/20 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-50">
+                    {passwordMessage}
+                  </p>
+                ) : null}
+              </div>
+            </div>
 
             <label className="block sm:col-span-2">
               <span className="text-sm font-medium text-slate-200">Optional note</span>

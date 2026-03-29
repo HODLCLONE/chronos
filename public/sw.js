@@ -1,4 +1,4 @@
-const CACHE_NAME = "chronos-v1";
+const CACHE_NAME = "chronos-v2";
 const CORE_ASSETS = ["/", "/manifest.webmanifest", "/chronos-icon.svg"];
 
 self.addEventListener("install", (event) => {

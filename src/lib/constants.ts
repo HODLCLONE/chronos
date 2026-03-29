@@ -9,6 +9,8 @@ export const PASSPHRASE_HINT =
 export const KDF_ITERATIONS = 310_000;
 export const BACKUP_KDF_ITERATIONS = 350_000;
 export const FINAL_CONFIRM_DELAY_SECONDS = 5;
+export const GENERATED_PASSWORD_COPY_MESSAGE = "Copy generated password";
+export const GENERATED_PASSWORD_REVEAL_LABEL = "Generate another";
 
 export const DURATION_OPTIONS: DurationOption[] = [
   { label: "7 days", value: "7d", days: 7 },

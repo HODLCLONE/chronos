@@ -62,6 +62,11 @@ export function ChronosApp() {
       });
       setLoading(false);
     });
+
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get("action") === "new-lockin") {
+      setCreateOpen(true);
+    }
   }, []);
 
   const readyCount = useMemo(
@@ -328,7 +333,7 @@ export function ChronosApp() {
           </section>
         </section>
 
-        <section className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
+        <section id="vault" className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Vault</p>
