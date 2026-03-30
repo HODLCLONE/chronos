@@ -231,6 +231,20 @@ export function ChronosApp() {
                   Backup and restore
                 </a>
               </div>
+              <div className="hex-scanner mt-6 grid gap-3 sm:grid-cols-3">
+                <div className="id-block">
+                  <p className="id-block-label">REVEAL AUTH GATE</p>
+                  <p className="id-block-value">PASSPHRASE CHECK</p>
+                </div>
+                <div className="id-block">
+                  <p className="id-block-label">SECRET READOUT</p>
+                  <p className="id-block-value">MASK-BY-DEFAULT</p>
+                </div>
+                <div className="id-block">
+                  <p className="id-block-label">HEX SCAN</p>
+                  <p className="id-block-value">TIME WINDOW ACTIVE</p>
+                </div>
+              </div>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">

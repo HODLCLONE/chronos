@@ -31,11 +31,12 @@ const sampleEntry: LockInEntry = {
 };
 
 describe("Chronos console depth pass", () => {
-  it("adds command-block and scanner-grid treatment to core app surfaces", () => {
+  it("adds command-block, scanner-grid, and hex scanner treatment to core app surfaces", () => {
     const markup = renderToStaticMarkup(createElement(ChronosApp));
 
     expect(markup).toContain("command-block");
     expect(markup).toContain("scanner-grid");
+    expect(markup).toContain("hex-scanner");
     expect(markup).toContain("MEASURED CONSTRAINTS");
   });
 
@@ -45,5 +46,13 @@ describe("Chronos console depth pass", () => {
     expect(markup).toContain("SIGNAL ID");
     expect(markup).toContain("LOCK VECTOR");
     expect(markup).toContain("command-block");
+  });
+
+  it("renders reveal and archive surfaces with table-style operations console labels", () => {
+    const markup = renderToStaticMarkup(createElement(ChronosApp));
+
+    expect(markup).toContain("ARCHIVE COMMAND BLOCK");
+    expect(markup).toContain("REVEAL AUTH GATE");
+    expect(markup).toContain("SECRET READOUT");
   });
 });

@@ -193,12 +193,14 @@ body::after {
   text-transform: uppercase;
 }
 
-.scanner-grid {
+.scanner-grid,
+.hex-scanner {
   position: relative;
   overflow: hidden;
 }
 
-.scanner-grid::after {
+.scanner-grid::after,
+.hex-scanner::after {
   content: "";
   position: absolute;
   inset: 0;
