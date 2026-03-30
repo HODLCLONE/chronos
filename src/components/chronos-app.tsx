@@ -198,7 +198,7 @@ export function ChronosApp() {
   return (
     <>
       <ChronosBootSequence visible={bootVisible} />
-      <main className="min-h-dvh text-slate-100">
+      <main className="nerv-console-shell min-h-dvh text-slate-100">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-5 px-4 pb-[calc(1.5rem+var(--safe-bottom))] pt-[calc(1.25rem+var(--safe-top))] sm:gap-6 sm:px-6 sm:py-8 lg:px-8">
         <section className="chronos-panel p-4 sm:p-8">
           <div className="grid gap-8 lg:grid-cols-[1.4fr_0.9fr]">
@@ -206,15 +206,15 @@ export function ChronosApp() {
               <div className="flex items-center gap-4">
                 <HourglassMark className="h-14 w-14 sm:h-16 sm:w-16" />
                 <div>
-                  <p className="chronos-kicker">Chronos · Titan of time</p>
-                  <p className="mt-2 text-xs uppercase tracking-[0.35em] text-[var(--chronos-muted)]">Hourglass Protocol · {MODE_NAME}</p>
+                  <p className="chronos-kicker">TEMPORAL LOCK CONSOLE</p>
+                  <p className="mt-2 text-xs uppercase tracking-[0.35em] text-[var(--chronos-muted)]">TIME DELAY PROTOCOL · {MODE_NAME}</p>
                 </div>
               </div>
               <h1 className="chronos-title mt-5 max-w-3xl text-3xl font-semibold tracking-tight sm:text-5xl">
-                Seal the gate. Let Chronos keep the key until time has spoken.
+                Seal the gate. Let time become the operator.
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-8 text-[var(--chronos-muted)] sm:text-lg">
-                Chronos is a local-first vow engine shaped like a temple vault. It forges a new password, seals it on this device, and puts an hourglass between impulse and reversal.
+                Chronos is a local-first time lock console. It forges a new password, stores the seal on this device, and inserts an hourglass between the impulse and the reversal.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
@@ -235,9 +235,9 @@ export function ChronosApp() {
 
             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
               {[
-                { label: "Sealed vaults", value: entries.length.toString() },
-                { label: "Hourglasses spent", value: readyCount.toString() },
-                { label: "Temple memory", value: "Local only" },
+                { label: "SEALED VAULTS", value: entries.length.toString() },
+                { label: "UNLOCK WINDOWS", value: readyCount.toString() },
+                { label: "LOCAL MEMORY", value: "ON-DEVICE" },
               ].map((metric) => (
                 <div key={metric.label} className="rounded-3xl border border-[var(--chronos-border)] bg-[var(--chronos-panel-strong)] p-4 sm:p-5">
                   <p className="text-xs uppercase tracking-[0.28em] text-[var(--chronos-muted)]">{metric.label}</p>
@@ -362,8 +362,8 @@ export function ChronosApp() {
             <div className="chronos-panel mt-6 flex flex-col items-center gap-4 px-5 py-10 text-center text-sm text-[var(--chronos-muted)]">
               <HourglassMark animated className="h-14 w-14" />
               <div>
-                <p className="chronos-kicker justify-center">Temple memory</p>
-                <p className="mt-3">The hourglass turns while Chronos reads the local vault.</p>
+                <p className="chronos-kicker justify-center">LOCAL MEMORY // READ</p>
+                <p className="mt-3">The hourglass turns while the console reads the local vault.</p>
               </div>
             </div>
           ) : entries.length === 0 ? (

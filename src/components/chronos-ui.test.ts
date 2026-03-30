@@ -10,7 +10,9 @@ describe("Chronos mobile-first UI", () => {
     const markup = renderToStaticMarkup(createElement(ChronosApp));
 
     expect(markup).toContain(">LOCK IN<");
+    expect(markup).toContain("TEMPORAL LOCK CONSOLE");
     expect(markup).not.toContain(">Create LockIn<");
+    expect(markup).not.toContain("Titan of time");
   });
 
   it("renders the create flow as a scrollable mobile-first sheet", () => {

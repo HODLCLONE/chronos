@@ -64,7 +64,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#04070f] text-slate-100">{children}</body>
+      <body className="min-h-full bg-[#04070f] text-slate-100">
+        <div className="scan-line-overlay" aria-hidden="true" />
+        {children}
+      </body>
     </html>
   );
 }

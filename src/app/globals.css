@@ -1,20 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #12070f;
-  --foreground: #f6eedf;
-  --chronos-night: #12070f;
-  --chronos-night-2: #1d0b16;
-  --chronos-panel: rgba(29, 13, 23, 0.78);
-  --chronos-panel-strong: rgba(44, 18, 29, 0.9);
-  --chronos-border: rgba(207, 168, 91, 0.28);
-  --chronos-border-strong: rgba(240, 200, 116, 0.54);
-  --chronos-gold: #e3bf73;
-  --chronos-gold-strong: #f7d995;
-  --chronos-crimson: #8f3045;
-  --chronos-ink: #f6eedf;
-  --chronos-muted: #c9b894;
-  --chronos-shadow: 0 30px 120px rgba(0, 0, 0, 0.42);
+  --background: #050505;
+  --foreground: #d7d7cf;
+  --chronos-night: #050505;
+  --chronos-night-2: #0c0c0a;
+  --chronos-panel: rgba(12, 12, 10, 0.92);
+  --chronos-panel-strong: rgba(17, 17, 16, 0.96);
+  --chronos-border: rgba(255, 152, 48, 0.22);
+  --chronos-border-strong: rgba(255, 152, 48, 0.6);
+  --chronos-gold: #ff9830;
+  --chronos-gold-strong: #ffcc50;
+  --chronos-crimson: #ff3030;
+  --chronos-ink: #d8d8d0;
+  --chronos-muted: #888880;
+  --chronos-data: #50ff50;
+  --chronos-cyan: #20f0ff;
+  --chronos-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
 }
 
 @theme inline {
@@ -41,12 +43,11 @@ body {
   margin: 0;
   min-height: 100dvh;
   background:
-    radial-gradient(circle at top, rgba(237, 196, 110, 0.14), transparent 24%),
-    radial-gradient(circle at bottom right, rgba(132, 43, 66, 0.22), transparent 28%),
-    linear-gradient(180deg, var(--chronos-night) 0%, var(--chronos-night-2) 48%, #09040a 100%);
+    linear-gradient(180deg, var(--chronos-night) 0%, var(--chronos-night-2) 100%);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-mono), var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
 }
 
 a {
@@ -91,20 +92,33 @@ body::after {
 
 body::before {
   background:
-    linear-gradient(90deg, transparent 0, rgba(227, 191, 115, 0.04) 48%, transparent 100%),
-    repeating-linear-gradient(180deg, rgba(255, 244, 219, 0.015) 0 1px, transparent 1px 24px);
-  opacity: 0.8;
+    linear-gradient(90deg, transparent 0, rgba(32, 240, 255, 0.05) 50%, transparent 100%),
+    linear-gradient(rgba(255, 152, 48, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 152, 48, 0.08) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+  opacity: 0.32;
 }
 
 body::after {
-  background: radial-gradient(circle at 20% 18%, rgba(247, 217, 149, 0.09), transparent 18%);
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.04) 2px, rgba(0, 0, 0, 0.04) 4px);
+  opacity: 0.9;
 }
 
 .chronos-panel {
+  position: relative;
   border: 1px solid var(--chronos-border);
-  background: linear-gradient(180deg, rgba(39, 17, 27, 0.94) 0%, rgba(20, 8, 15, 0.92) 100%);
+  background: linear-gradient(180deg, var(--chronos-panel-strong) 0%, var(--chronos-panel) 100%);
   box-shadow: var(--chronos-shadow);
-  border-radius: 1.75rem;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.chronos-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 152, 48, 0.03), transparent 22%);
 }
 
 .chronos-kicker {
@@ -112,19 +126,37 @@ body::after {
   align-items: center;
   gap: 0.55rem;
   color: var(--chronos-gold);
-  font-size: 0.72rem;
-  letter-spacing: 0.32em;
+  font-size: 0.68rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
 }
 
 .chronos-kicker::before {
-  content: "◈";
-  color: var(--chronos-gold-strong);
+  content: "//";
+  color: var(--chronos-cyan);
 }
 
 .chronos-title {
   color: var(--chronos-ink);
-  text-shadow: 0 0 24px rgba(227, 191, 115, 0.08);
+  text-shadow: 0 0 10px rgba(255, 152, 48, 0.16);
+  text-transform: uppercase;
+}
+
+.nerv-console-shell {
+  position: relative;
+}
+
+.nerv-console-shell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 152, 48, 0.08);
+  pointer-events: none;
+}
+
+.nerv-data {
+  color: var(--chronos-data);
+  text-shadow: 0 0 8px rgba(80, 255, 80, 0.24);
 }
 
 .chronos-hourglass {
@@ -185,20 +217,40 @@ body::after {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  border: 1px solid rgba(227, 191, 115, 0.14);
-  background: rgba(247, 217, 149, 0.04);
-  border-radius: 999px;
+  border: 1px solid rgba(255, 152, 48, 0.16);
+  background: rgba(255, 152, 48, 0.04);
+  border-radius: 0;
   padding: 0.8rem 1rem;
   color: var(--chronos-muted);
   animation: chronos-boot-pulse 1.2s ease-in-out infinite;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
 }
 
 .chronos-boot-dot {
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 999px;
-  background: var(--chronos-gold-strong);
-  box-shadow: 0 0 12px rgba(247, 217, 149, 0.55);
+  background: var(--chronos-data);
+  box-shadow: 0 0 12px rgba(80, 255, 80, 0.55);
+}
+
+.scan-line-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(80,255,80,0.15) 20%, rgba(80,255,80,0.3) 50%, rgba(80,255,80,0.15) 80%, transparent 100%);
+  pointer-events: none;
+  z-index: 9997;
+  animation: scan-line 4s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
 }
 
 @keyframes chronos-hourglass-flip {

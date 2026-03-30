@@ -5,9 +5,9 @@ type Props = {
 };
 
 const BOOT_LINES = [
-  "Temple clock engaged",
-  "Astral vault aligning",
-  "Flip the hourglass",
+  "SYSTEM BOOT // TIME GATE",
+  "CLOCK VECTOR ALIGNING",
+  "FLIP THE HOURGLASS",
 ];
 
 export function ChronosBootSequence({ visible }: Props) {
@@ -20,10 +20,10 @@ export function ChronosBootSequence({ visible }: Props) {
       <div className="chronos-panel mx-auto flex w-full max-w-xl flex-col items-center gap-6 px-6 py-8 text-center sm:px-8">
         <HourglassMark animated className="h-24 w-24 sm:h-28 sm:w-28" />
         <div>
-          <p className="chronos-kicker justify-center">Chronos awakening</p>
-          <h2 className="mt-3 text-3xl font-semibold text-[var(--chronos-ink)] sm:text-4xl">Temple clock engaged</h2>
+          <p className="chronos-kicker justify-center">SYSTEM BOOT // TIME GATE</p>
+          <h2 className="mt-3 text-3xl font-semibold text-[var(--chronos-ink)] sm:text-4xl">TEMPORAL LOCK CONSOLE</h2>
           <p className="mt-4 text-sm leading-7 text-[var(--chronos-muted)] sm:text-base">
-            The vault wakes like a god of time: gold dust turns, the seal tightens, and the hourglass flips before entry.
+            The shell wakes like an operations console: scanlines settle, the seal syncs, and the hourglass flips before entry.
           </p>
         </div>
         <div className="w-full space-y-3">

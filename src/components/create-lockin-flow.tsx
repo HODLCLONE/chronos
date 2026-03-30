@@ -151,10 +151,10 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
           <div className="flex items-start gap-4">
             <HourglassMark className="mt-1 h-12 w-12 sm:h-14 sm:w-14" />
             <div>
-              <p className="chronos-kicker">Forge the seal</p>
-              <h2 className="chronos-title mt-2 text-2xl font-semibold">Enter the temple of Chronos.</h2>
+              <p className="chronos-kicker">ACCESS RITE // TIME DELAY</p>
+              <h2 className="chronos-title mt-2 text-2xl font-semibold">Enter the time lock console.</h2>
               <p className="mt-3 max-w-2xl text-sm text-[var(--chronos-muted)]">
-                This rite is deliberately inconvenient. Chronos is here to guard the vow, not comfort the part of you that wants to reverse it early.
+                This rite is deliberately inconvenient. The system is here to defend the lock, not comfort the part of you that wants to reverse it early.
               </p>
             </div>
           </div>
@@ -213,7 +213,7 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
               <span className="text-sm font-medium text-slate-200">Generated lockout password</span>
               <div className="mt-2 rounded-[1.75rem] border border-cyan-300/20 bg-cyan-300/8 p-4">
                 <p className="text-sm leading-7 text-slate-200">
-                  Chronos generates the replacement password for you. It stays hidden here until you copy it into the platform you are locking down.
+                  The console generates the replacement password for you. It stays hidden here until you copy it into the platform you are locking down.
                 </p>
                 <div className="mt-4 rounded-2xl border border-white/10 bg-slate-950/80 px-4 py-3 text-base tracking-[0.38em] text-slate-200" aria-label="Generated password hidden">
                   •••••••••••••
@@ -224,7 +224,7 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
                     className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-cyan-300 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
                     onClick={() => {
                       handleCopyPassword().catch(() => {
-                        setError("Chronos could not copy the generated password.");
+                        setError("The console could not copy the generated password.");
                       });
                     }}
                   >
@@ -286,7 +286,7 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
               </label>
             ) : (
               <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-4 text-sm text-slate-400">
-                Chronos will refuse to reveal this LockIn until the timer has fully expired.
+                The time lock will refuse to reveal this LockIn until the timer has fully expired.
               </div>
             )}
 
@@ -326,9 +326,9 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
             <p className="text-xs uppercase tracking-[0.28em] text-amber-200/80">Warning 1 · local-only risk</p>
             <h3 className="mt-3 text-xl font-semibold text-white">This device is the vault. That is both the feature and the risk.</h3>
             <ul className="mt-5 space-y-3 text-sm leading-7 text-amber-50/90">
-              <li>• Chronos stores encrypted data only on this device. No cloud copy exists.</li>
+              <li>• The time lock stores encrypted data only on this device. No cloud copy exists.</li>
               <li>• Clearing browser data, uninstalling the app, or losing the device may erase everything.</li>
-              <li>• If you forget the passphrase, Chronos cannot recover the secret for you.</li>
+              <li>• If you forget the passphrase, the system cannot recover the secret for you.</li>
               <li>• This is not a password manager replacement. It is a commitment tool with sharp edges.</li>
             </ul>
           </div>
@@ -336,10 +336,10 @@ export function CreateLockInFlow({ hasExistingPassphrase, pending, onClose, onSu
 
         {step === 3 ? (
             <div className="mt-8 rounded-[1.75rem] border border-[var(--chronos-border-strong)] bg-[rgba(143,48,69,0.18)] p-6 text-sm text-[var(--chronos-ink)]">
-              <p className="text-xs uppercase tracking-[0.28em] text-[var(--chronos-gold-strong)]">Final rite · oath to Chronos</p>
+              <p className="text-xs uppercase tracking-[0.28em] text-[var(--chronos-gold-strong)]">Final rite · temporal commitment</p>
               <h3 className="mt-3 text-xl font-semibold text-[var(--chronos-ink)]">This seal is meant to outlast your weak moment.</h3>
               <p className="mt-4 max-w-2xl leading-7 text-[var(--chronos-muted)]">
-                Speak the line exactly. The god of time only opens the gate for a vow repeated in full, after the hourglass has turned.
+                Speak the line exactly. The gate only opens for a vow repeated in full, after the hourglass has turned.
               </p>
               <div className="mt-5 rounded-2xl border border-[var(--chronos-border)] bg-[rgba(247,217,149,0.06)] px-4 py-3">
                 <p className="text-xs uppercase tracking-[0.24em] text-[var(--chronos-gold)]">Seal spoken before the gate opens</p>

@@ -113,9 +113,9 @@ export function PwaInstallPrompt({ testState }: Props) {
     <section className="chronos-panel p-4 sm:rounded-3xl sm:p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="max-w-2xl">
-          <p className="chronos-kicker">Temple shell</p>
+          <p className="chronos-kicker">CONSOLE SHELL</p>
           <h2 className="chronos-title mt-1 text-lg font-semibold">
-            {state.installed ? "Installed on this device" : "Install the shrine of Chronos."}
+            {state.installed ? "Installed on this device" : "Install the time lock shell."}
           </h2>
           <p className="mt-2 text-sm text-slate-300">
             {state.online
