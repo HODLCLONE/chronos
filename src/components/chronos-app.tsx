@@ -262,9 +262,9 @@ export function ChronosApp() {
         ) : null}
 
         <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Trust model</p>
-            <h2 className="mt-3 text-2xl font-semibold text-white">Honest constraints, not fake certainty.</h2>
+          <div className="chronos-panel command-block scanner-grid p-4 sm:p-6">
+            <p className="command-block-label">MEASURED CONSTRAINTS</p>
+            <h2 className="chronos-title mt-3 text-2xl font-semibold">Honest constraints, not fake certainty.</h2>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
               Chronos does not pretend to be absolute security. It is a disciplined speed bump: no cloud, no recovery, no convenience layer, and no promise that a determined technical user cannot bypass local restrictions.
             </p>
@@ -277,9 +277,9 @@ export function ChronosApp() {
             </ul>
           </div>
 
-          <section id="backup" className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 sm:rounded-[2rem] sm:p-6">
-            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">Encrypted backup</p>
-            <h2 className="mt-3 text-2xl font-semibold text-white">Export and import stay client-side.</h2>
+          <section id="backup" className="chronos-panel command-block scanner-grid p-4 sm:p-6">
+            <p className="command-block-label">ARCHIVE COMMAND BLOCK</p>
+            <h2 className="chronos-title mt-3 text-2xl font-semibold">Export and import stay client-side.</h2>
             <p className="mt-4 text-sm leading-7 text-slate-300">
               Export creates a locally encrypted file. Import decrypts locally. Neither action talks to a backend. If you lose both this device and your backup, Chronos cannot help you.
             </p>

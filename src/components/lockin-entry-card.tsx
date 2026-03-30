@@ -7,10 +7,20 @@ export function LockInEntryCard({ entry }: { entry: LockInEntry }) {
   const status = getLockStatus(entry.unlockAt);
 
   return (
-    <article className="chronos-panel p-4 sm:p-5">
+    <article className="chronos-panel command-block scanner-grid p-4 sm:p-5">
+      <div className="mb-4 grid gap-3 sm:grid-cols-2">
+        <div className="id-block">
+          <p className="id-block-label">SIGNAL ID</p>
+          <p className="id-block-value">{entry.id.slice(0, 8)}</p>
+        </div>
+        <div className="id-block">
+          <p className="id-block-label">LOCK VECTOR</p>
+          <p className="id-block-value">{status === "ready" ? "UNLOCK WINDOW" : "SEALED"}</p>
+        </div>
+      </div>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.28em] text-[var(--chronos-muted)]">{status === "ready" ? "Seal may open" : "Seal active"}</p>
+          <p className="command-block-label">{status === "ready" ? "Unlock window" : "Seal active"}</p>
           <h3 className="chronos-title mt-2 text-xl font-semibold">{entry.serviceName}</h3>
           <p className="mt-2 text-sm text-[var(--chronos-muted)]">Mortal identity: {entry.usernameOrEmail}</p>
         </div>

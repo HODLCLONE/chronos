@@ -127,10 +127,20 @@ export function LockInDetailClient({ id }: { id: string }) {
           </button>
         </div>
 
-        <section className="rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-4 shadow-[0_30px_120px_rgba(0,0,0,0.34)] sm:rounded-[2rem] sm:p-8">
-          <p className="text-xs uppercase tracking-[0.35em] text-cyan-200/75">Chronos · Lock detail</p>
-          <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-6">
+        <section className="chronos-panel command-block scanner-grid p-4 sm:p-8">
+          <p className="command-block-label">LOCK VECTOR DOSSIER</p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-start">
             <div>
+              <div className="mb-4 grid gap-3 sm:grid-cols-2">
+                <div className="id-block">
+                  <p className="id-block-label">SIGNAL ID</p>
+                  <p className="id-block-value">{entry.id.slice(0, 8)}</p>
+                </div>
+                <div className="id-block">
+                  <p className="id-block-label">LOCK VECTOR</p>
+                  <p className="id-block-value">{status === "ready" ? "UNLOCK WINDOW" : "SEALED"}</p>
+                </div>
+              </div>
               <h1 className="text-3xl font-semibold text-white sm:text-4xl">{entry.serviceName}</h1>
               <p className="mt-3 text-sm text-slate-400">Identity hint: {entry.usernameOrEmail}</p>
             </div>
