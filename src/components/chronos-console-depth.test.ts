@@ -46,6 +46,7 @@ describe("Chronos console depth pass", () => {
     expect(markup).toContain("SIGNAL ID");
     expect(markup).toContain("LOCK VECTOR");
     expect(markup).toContain("command-block");
+    expect(markup).toContain("status-indicator");
   });
 
   it("renders reveal and archive surfaces with table-style operations console labels", () => {

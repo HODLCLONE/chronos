@@ -24,14 +24,8 @@ export function LockInEntryCard({ entry }: { entry: LockInEntry }) {
           <h3 className="chronos-title mt-2 text-xl font-semibold">{entry.serviceName}</h3>
           <p className="mt-2 text-sm text-[var(--chronos-muted)]">Mortal identity: {entry.usernameOrEmail}</p>
         </div>
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
-            status === "ready"
-              ? "bg-emerald-400/15 text-emerald-200"
-              : "bg-amber-400/15 text-amber-100"
-          }`}
-        >
-          {status}
+        <span className={`status-indicator ${status === "ready" ? "ready" : "sealed"}`}>
+          {status === "ready" ? "UNLOCK WINDOW" : "SEALED"}
         </span>
       </div>
 
@@ -52,10 +46,7 @@ export function LockInEntryCard({ entry }: { entry: LockInEntry }) {
             ? "The waiting period is over. Reveal still requires the passphrase."
             : "Chronos is doing its job. The secret stays encrypted and inconvenient until time runs out."}
         </p>
-        <Link
-          href={`/lockins/${entry.id}`}
-          className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-cyan-300 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
-        >
+        <Link href={`/lockins/${entry.id}`} className="command-button-muted">
           View LockIn
         </Link>
       </div>

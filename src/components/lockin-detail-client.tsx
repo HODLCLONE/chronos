@@ -144,30 +144,33 @@ export function LockInDetailClient({ id }: { id: string }) {
               <h1 className="text-3xl font-semibold text-white sm:text-4xl">{entry.serviceName}</h1>
               <p className="mt-3 text-sm text-slate-400">Identity hint: {entry.usernameOrEmail}</p>
             </div>
-            <span
-              className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] ${
-                status === "ready"
-                  ? "bg-emerald-400/15 text-emerald-200"
-                  : "bg-amber-400/15 text-amber-100"
-              }`}
-            >
-              {status === "ready" ? "Unlock window open" : "Still locked"}
+            <span className={`status-indicator ${status === "ready" ? "ready" : "sealed"}`}>
+              {status === "ready" ? "UNLOCK WINDOW" : "SEALED"}
             </span>
           </div>
 
-          <div className="mt-6 grid gap-3 md:mt-8 md:grid-cols-3 md:gap-4">
-            <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Unlock date</p>
-              <p className="mt-3 text-lg font-medium text-white">{formatUnlockDate(entry.unlockAt)}</p>
-            </div>
-            <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Countdown</p>
-              <p className="mt-3 text-lg font-medium text-white">{formatCountdown(entry.unlockAt)}</p>
-            </div>
-            <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5">
-              <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Trust model</p>
-              <p className="mt-3 text-sm leading-7 text-slate-300">Local-only encryption. No cloud recovery. No early bypass in V1.</p>
-            </div>
+          <div className="mt-6 overflow-hidden border border-[var(--chronos-border)] bg-[rgba(255,152,48,0.03)]">
+            <table className="nerv-table">
+              <thead>
+                <tr>
+                  <th colSpan={2}>LOCK DOSSIER READOUT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="label">Unlock date</td>
+                  <td>{formatUnlockDate(entry.unlockAt)}</td>
+                </tr>
+                <tr>
+                  <td className="label">Countdown</td>
+                  <td className="nerv-data">{formatCountdown(entry.unlockAt)}</td>
+                </tr>
+                <tr>
+                  <td className="label">Trust model</td>
+                  <td>Local-only encryption. No cloud recovery. No early bypass in V1.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </section>
 
@@ -220,59 +223,68 @@ export function LockInDetailClient({ id }: { id: string }) {
             <h2 className="chronos-title mt-3 text-2xl font-semibold">Masked by default. Explicit reveal only.</h2>
 
             {revealed ? (
-              <div className="mt-6 space-y-5">
-                <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5">
-                  <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Username or email</p>
-                  <p className="mt-3 break-all text-lg font-medium text-white">{revealed.usernameOrEmail}</p>
-                  <button
-                    type="button"
-                    className="command-button-muted mt-4"
-                    onClick={() => {
-                      copyValue(revealed.usernameOrEmail, "Username or email").catch(() =>
-                        setError("Chronos could not copy the username or email."),
-                      );
-                    }}
-                  >
-                    Copy username or email
-                  </button>
-                </div>
-
-                <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5">
-                  <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Password</p>
-                  <p className="mt-3 break-all text-lg font-medium tracking-[0.28em] text-white">
-                    {passwordVisible ? revealed.password : "•••••••••••••••"}
-                  </p>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">
-                    Chronos keeps the password masked until you explicitly show it. Copy works either way.
-                  </p>
-                  <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                    <button
-                      type="button"
-                      className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
-                      onClick={() => {
-                        copyValue(revealed.password, "Password").catch(() =>
-                          setError("Chronos could not copy the password."),
-                        );
-                      }}
-                    >
-                      Copy password
-                    </button>
-                    <button
-                      type="button"
-                      className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
-                      onClick={() => setPasswordVisible((current) => !current)}
-                    >
-                      {passwordVisible ? "Hide password" : "Show password"}
-                    </button>
-                  </div>
-                </div>
-
-                {revealed.note ? (
-                  <div className="rounded-3xl border border-white/8 bg-white/[0.03] p-5">
-                    <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Locked note</p>
-                    <p className="mt-3 whitespace-pre-wrap text-sm leading-7 text-slate-200">{revealed.note}</p>
-                  </div>
-                ) : null}
+              <div className="mt-6 overflow-hidden border border-[var(--chronos-border)] bg-[rgba(255,152,48,0.03)]">
+                <table className="nerv-table">
+                  <thead>
+                    <tr>
+                      <th colSpan={2}>SECRET READOUT TABLE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="label">Username / email</td>
+                      <td>
+                        <div className="break-all">{revealed.usernameOrEmail}</div>
+                        <button
+                          type="button"
+                          className="command-button-muted mt-3"
+                          onClick={() => {
+                            copyValue(revealed.usernameOrEmail, "Username or email").catch(() =>
+                              setError("Chronos could not copy the username or email."),
+                            );
+                          }}
+                        >
+                          Copy username or email
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="label">Password</td>
+                      <td>
+                        <div className="break-all tracking-[0.28em]">{passwordVisible ? revealed.password : "•••••••••••••••"}</div>
+                        <div className="mt-3 text-sm leading-6 text-[var(--chronos-muted)]">
+                          Mask-by-default readout. Copy works without visual exposure.
+                        </div>
+                        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                          <button
+                            type="button"
+                            className="command-button-muted"
+                            onClick={() => {
+                              copyValue(revealed.password, "Password").catch(() =>
+                                setError("Chronos could not copy the password."),
+                              );
+                            }}
+                          >
+                            Copy password
+                          </button>
+                          <button
+                            type="button"
+                            className="command-button-muted"
+                            onClick={() => setPasswordVisible((current) => !current)}
+                          >
+                            {passwordVisible ? "Hide password" : "Show password"}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    {revealed.note ? (
+                      <tr>
+                        <td className="label">Locked note</td>
+                        <td className="whitespace-pre-wrap">{revealed.note}</td>
+                      </tr>
+                    ) : null}
+                  </tbody>
+                </table>
               </div>
             ) : (
               <div className="id-block mt-6">

@@ -269,6 +269,62 @@ body::after {
   }
 }
 
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  border-radius: 0;
+  border: 1px solid var(--chronos-border);
+  padding: 0.45rem 0.75rem;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.status-indicator.sealed {
+  color: var(--chronos-gold-strong);
+  background: rgba(255, 152, 48, 0.08);
+}
+
+.status-indicator.ready {
+  color: var(--chronos-data);
+  border-color: rgba(80, 255, 80, 0.32);
+  background: rgba(80, 255, 80, 0.08);
+}
+
+.nerv-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.nerv-table th {
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid var(--chronos-border);
+  text-align: left;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chronos-gold);
+}
+
+.nerv-table td {
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid rgba(255, 152, 48, 0.08);
+  font-size: 0.82rem;
+  color: var(--chronos-ink);
+  vertical-align: top;
+}
+
+.nerv-table td.label {
+  width: 34%;
+  color: var(--chronos-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
 .chronos-hourglass {
   position: relative;
   display: inline-flex;
