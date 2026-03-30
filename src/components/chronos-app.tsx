@@ -312,7 +312,7 @@ export function ChronosApp() {
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <button
                 type="button"
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-full bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-100 sm:min-h-0 sm:w-auto sm:py-2"
+                className="command-button"
                 onClick={() => {
                   handleExport().catch((error) =>
                     setToast({
@@ -324,7 +324,7 @@ export function ChronosApp() {
               >
                 Export encrypted backup
               </button>
-              <label className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2">
+              <label className="command-button-muted">
                 <input ref={importInputRef} type="file" accept="application/json" className="hidden" />
                 Choose backup file
               </label>
@@ -345,7 +345,7 @@ export function ChronosApp() {
 
             <button
               type="button"
-              className="mt-4 inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/15 px-4 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:text-cyan-200 sm:min-h-0 sm:w-auto sm:py-2"
+              className="command-button-muted mt-4"
               onClick={() => {
                 const file = importInputRef.current?.files?.[0] ?? null;
                 handleImport(file).catch((error) =>

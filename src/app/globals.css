@@ -212,6 +212,63 @@ body::after {
   opacity: 0.28;
 }
 
+.command-button,
+.command-button-muted,
+.command-button-danger {
+  display: inline-flex;
+  min-height: 2.75rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  padding: 0.85rem 1rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.command-button {
+  border: 1px solid var(--chronos-gold);
+  background: rgba(255, 152, 48, 0.12);
+  color: var(--chronos-gold-strong);
+}
+
+.command-button:hover {
+  background: rgba(255, 152, 48, 0.2);
+}
+
+.command-button-muted {
+  border: 1px solid var(--chronos-border);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--chronos-ink);
+}
+
+.command-button-muted:hover {
+  border-color: var(--chronos-border-strong);
+  color: var(--chronos-gold-strong);
+}
+
+.command-button-danger {
+  border: 1px solid rgba(255, 48, 48, 0.45);
+  background: rgba(255, 48, 48, 0.1);
+  color: #ff7a7a;
+}
+
+.command-button-danger:hover {
+  background: rgba(255, 48, 48, 0.18);
+}
+
+@media (min-width: 640px) {
+  .command-button,
+  .command-button-muted,
+  .command-button-danger {
+    width: auto;
+    min-height: 0;
+  }
+}
+
 .chronos-hourglass {
   position: relative;
   display: inline-flex;
